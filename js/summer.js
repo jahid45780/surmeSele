@@ -1,52 +1,58 @@
-const total1 = document.getElementById('total-on');
-let total =0;
-function handleClickCard (target){
-   const selectedItemContainer=document.getElementById('selected-Items');
-const itemsName =  target.childNodes[3].childNodes[3].innerText;
-console.log(itemsName);
-const li =document.createElement('li');
-li.innerText=itemsName
-selectedItemContainer.appendChild(li);
+const applyBtn = document.getElementById ('apply-btn');
+const applyInput = document.getElementById ('apply-input');
+const totalPrice = document.getElementById('total-price');
+const discount = document.getElementById('discount');
+const totalOn = document.getElementById('total-on');
+const showParent = document.getElementById('selected-Items')
+const makePurchaseBtn = document.getElementById('make-purchase-btn');
 
-const price = target.childNodes[3].childNodes[5].innerText.split(" ")[0]; 
 
-total = parseInt (total) + parseInt(price);
- document.getElementById('total-price').innerText=total;
- totalPrice.innerText = total;
+let newTotalPrice = 0;
 
- total1.innerText = parseFloat(totalPrice.innerText);
+function handleClickCard(event){
+    const itemNames = event.children[1].children[1].innerText;
+    const itemPriceText = event.children[1].children[2].children[0].innerText;
+    const itemPrice= parseFloat(itemPriceText);
+    const li = document.createElement('li');
+    li.innerText= itemNames;
+    showParent.appendChild(li);
+    newTotalPrice = newTotalPrice + itemPrice;
+    totalPrice.innerText = newTotalPrice;
+    totalOn.innerText = newTotalPrice;
 
+    if(newTotalPrice > 0 ){
+        makePurchaseBtn.removeAttribute('disabled');
+    }
+
+    
+    if(newTotalPrice >= 200){
+        applyBtn.removeAttribute('disabled');
+    }
+
+}
+
+applyBtn.addEventListener('click',function(){
+
+ const cuponCode= document.getElementById('apply-input').value;
  
 
+ if(cuponCode !== 'SELL200'){
+    alert('coupon code vul disan vai')
+    return;
+ }
 
+ const discountPrice = newTotalPrice * 20 / 100;
+ discount.innerText = discountPrice;
 
+ const remainingTotalPrice = newTotalPrice - discountPrice;
+ totalOn.innerText = parseFloat(remainingTotalPrice);
 
-
-  
-}
-
-
-
-
-
-
- function applyClick(target){
-   const discount = document.getElementById('discount');
-   const inputId = document.getElementById('input-id');
-   const inputIdElement = inputId.value;
-   if ( inputIdElement === 'SELL200'){
-      discount.innerText =parseFloat(totalPrice.innerText)*0.2;
-      total.innerText =parseFloat(totalPrice.innerText) - parseFloat(totalPrice.innerText)*0.2;
-
-   };
-
-
-}
-
+});
 
 function goHome(){
-   location.reload()
-}
+    location.reload()
+};
+
 
 
 
